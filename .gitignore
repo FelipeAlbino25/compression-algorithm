@@ -1,1 +1,4 @@
 compact
+/logic/*.o
+/testbenches/*.o
+*.o

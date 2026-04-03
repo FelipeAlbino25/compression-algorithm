@@ -3,16 +3,14 @@
 #include <string>
 #include <stdexcept> 
 #include <unordered_map>
-#include "testbenches/character_counter.hpp"
+#include "testbenches/testbench_runner.hpp" 
+#include "logic/compressor.hpp"
 
 using namespace std;
 
 /*
-    when contributing to this project: the preferred executable name is 'compact',
-    as listed in the .gitignore file. This was established as to not flood the repo
-    with tons of outdated executable versions of previous c++ code
-
-    there is a testbench.txt file that will be used for testing each of the algorithm steps
+    when contributing to this project: use the Makefile to create a executable out of this code,
+    as it prevents tons of old versions to flood the repo
 */
 
 int main(int argc, char* argv[]) {
@@ -36,31 +34,21 @@ int main(int argc, char* argv[]) {
     else if(argc >3){
         cerr << "\033[31m\nINCORRECT ARGUMENTS (TOO MANY ARGUMENTS PASSED)\033[0m\n";
         cerr << "CORRECT USE: " << argv[0] << " <TARGET_FILE_PATH>\n (OPTIONAL)<TESTBENCH_OPTIONS>";
-
+        return 1;
     }
 
     //will launch an exception if it detects a reading error (badbit)
     file.exceptions(fstream::badbit);
 
     try {
-        //new object that offers the count of each character and its visualization
-        CharacterCounter counter;
-        
-        file.open(fileName);
-
-        //detecting failbit manually as to not launch an error everytime the file.get() gets to the end of a text file
-        if (!file.is_open()) {
-            throw runtime_error("WAS NOT ABLE TO READ/OPEN THE GIVEN FILE: " + fileName);
-        }
-        
-        cout << "FILE OPENED SUCCESSFULLY: " << fileName << "\n";
-
-        //logical structure for counting number of occurences of each character (number/letter/space/etc)
-        unordered_map<char,int> frequencyMap = counter.countFrequencies(fileName);
-
-        if(testBenchOptions=="a"){
-            counter.printFrequencies(frequencyMap);
-        }
+      if(testBenchOptions==""){
+        Compressor compressor;
+        compressor.compress(fileName);
+      }
+      else{
+        TestbenchRunner runner;
+        runner.run(testBenchOptions, fileName);
+      }
     } 
     // verifies if its an ifstream exception
     catch (const ifstream::failure& e) {
