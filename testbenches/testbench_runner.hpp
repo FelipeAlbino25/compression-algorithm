@@ -2,6 +2,8 @@
 #define TESTBENCH_RUNNER_HPP
 
 #include <string>
+#include <filesystem>
+#include <fstream>
 
 class TestbenchRunner {
 public:

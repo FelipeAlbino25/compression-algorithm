@@ -14,6 +14,7 @@ public:
 
     //method responsible for opening the file and counting each instance of a character
     unordered_map<char, int> countFrequencies(const string& fileName);
+    //method responsible for generating the redundancy list of a file
     vector<string> redundancyList(const string& fileName);
 };
 

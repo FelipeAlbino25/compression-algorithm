@@ -7,6 +7,7 @@
 
 
 using namespace std;
+namespace fs = std::filesystem;
 
 void TestbenchRunner::run(const string& option, const string& fileName) {
     if (option == "-count") {
@@ -19,11 +20,26 @@ void TestbenchRunner::run(const string& option, const string& fileName) {
     } else if (option == "-redundancy") {
         cout << "\nCOMPRESSION BY REDUNDANCY\n";
         FrequencyCounter uMap;
-        
         vector<string> list = uMap.redundancyList(fileName);
-        for (string e : list) {
-            cout << e;
+        stringstream compressed_content;
+        for (string s : list) {
+            compressed_content << s;
         }
-        cout << endl;
+        stringstream cpt_name;
+        cpt_name << fileName << ".freg";
+        std::ofstream arquivo(cpt_name.str(), std::ios::binary);
+        string final_str = compressed_content.str();
+        if (arquivo.is_open()) {
+            arquivo.write(final_str.data(), final_str.size());
+            cout << "Compression went successfully!" << endl;
+            arquivo.flush();
+            arquivo.close();
+        } else {
+            throw runtime_error("ERROR WHILE TRYING TO CREATE COMPRESSED FILE!");
+            return;
+        }
+
+        
+
     }
 }

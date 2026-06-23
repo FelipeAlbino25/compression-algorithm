@@ -24,45 +24,56 @@ unordered_map<char, int> FrequencyCounter::countFrequencies(const string& fileNa
 }
 
 vector<string> FrequencyCounter::redundancyList(const string& fileName) {
-    ifstream file;
-    file.exceptions(ifstream::badbit);
+    ifstream file(fileName, std::ios::binary);
+    //file.exceptions(ifstream::badbit);
     vector<string> frequencyList;
 
-    file.open(fileName);
     if (!file.is_open()) {
         throw runtime_error("WAS NOT ABLE TO READ/OPEN THE GIVEN FILE: " + fileName);
     }
 
     char curr_char, in;
-    int index = 0, count;
-    bool exit = false;
-    while (!exit) {
-        count = 0;
-        if (index == 0) file.get(curr_char);
-        
-        bool same = true;
-        while(same) {
+    int index = 0, count = 0;
+    while (file.get(in)) {
+        if (index == 0) {
             count++;
-            if (!file.get(in)) {
-                same = false;
-                exit = true;
-                continue;
-            }
-
-            if (in != curr_char) {
-                stringstream str;
-                str << count;
-                if (isdigit(curr_char)) {
-                    str << '@';
-                }
-                str << curr_char;
-                frequencyList.push_back(str.str());
-                index++;
-                curr_char = in;
-                same = false;
-                continue;
-            }
+            curr_char = in;
+            index++;
+            continue;
         }
+
+        index++;
+
+        if (in != curr_char) {
+            stringstream str;
+            if (count > 1) {
+                str << count;
+            }
+            if (curr_char >= '0' && curr_char <= '9') {
+                str << '@';
+            }
+            str << curr_char;
+            frequencyList.push_back(str.str());
+            curr_char = in;
+            count = 1;
+            continue;
+        } else {
+            count++;
+        }
+    }
+    file.close();
+    cout << "Exited, index=" << index << endl;
+
+    if (count > 0) {
+        stringstream str;
+        if (count > 1) {
+            str << count;
+        }
+        if (curr_char >= '0' && curr_char <= '9') {
+            str << '@';
+        }
+        str << curr_char;
+        frequencyList.push_back(str.str());
     }
 
     return frequencyList; 
