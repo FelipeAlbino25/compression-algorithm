@@ -87,8 +87,10 @@ void TestbenchRunner::run(const string& option, const string& fileName) {
         stringstream cpt_name;
         cpt_name << fileName << ".huff.freg";
         std::ofstream arquivo(cpt_name.str(), std::ios::binary);
-        //string final_str = compressed_content.str();
         if (arquivo.is_open()) {
+            arquivo.put(0xff);
+            arquivo << tree.toString();
+            arquivo.put(0xff);
             writeEncodedText(line, tree.getTable(), arquivo);
             arquivo.flush();
             arquivo.close();

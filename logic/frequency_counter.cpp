@@ -147,8 +147,32 @@ node* ht::build(vector<node*> plist) {
 char ht::getChar(string code) {
     return 'a';
 }
-string ht::stringify() {
-    return "a";
+
+string node_to_text(node* n) {
+    stringstream nstr;
+    nstr << "{";
+    nstr << n->control_node;
+    nstr << n->c;
+    nstr << n->freq;
+    nstr << "}";
+    return nstr.str();
+}
+
+void stringify(node* n, stringstream *ss) {
+    if (!n->control_node) {
+        *(ss) << node_to_text(n);
+        return;
+    }
+    if (n->esq != nullptr) stringify(n->esq, ss);
+    if (n->dir != nullptr) stringify(n->dir, ss);
+}
+
+string ht::toString() {
+    stringstream str;
+
+    stringify(this->root, &str);
+
+    return str.str();
 }
 
 void print_list(vector<node*> plist) {
@@ -178,7 +202,7 @@ void ht::showTree() {
 void writeEncodedText(const string& texto_original, unordered_map<char, string> table, ofstream& arquivo_saida) {
     unsigned char byte_acumulador = 0;
     int contador_bits = 0;
-
+    // Inserir a tabela no arquivo
     for (char letra : texto_original) {
         string codigo_binario = table[letra];
 

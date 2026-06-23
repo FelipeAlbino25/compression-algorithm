@@ -26,6 +26,8 @@ struct Node {
     struct Node* esq;
 } typedef node;
 
+string node_to_text(node* n);
+
 class HuffmanTree {
     private:
         node* root;
@@ -35,7 +37,7 @@ class HuffmanTree {
         HuffmanTree();
         node* build(vector<node*> plist);
         char getChar(string code);
-        string stringify();
+        string toString();
         void showTable();
         void showTree();
         unordered_map<char, string> getTable();
@@ -47,4 +49,6 @@ vector<node*> priority_list(unordered_map<char, int> freqMap);
 void print_list(vector<node*> plist);
 
 void writeEncodedText(const string& texto_original, unordered_map<char, string> table, ofstream& arquivo_saida);
+
+void stringify(node* n, stringstream& ss);
 #endif // FREQUENCY_COUNTER_HPP
