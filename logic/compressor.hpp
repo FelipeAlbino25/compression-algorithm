@@ -7,8 +7,6 @@ class Compressor {
 public:
     //compresses given file
     void compress(const std::string& fileName);
-    
-
 };
 
 #endif
