@@ -9,12 +9,21 @@
 using namespace std;
 
 void TestbenchRunner::run(const string& option, const string& fileName) {
-    if (option == "a") {
+    if (option == "-count") {
         cout << "\nFREQUENCY OF CHARACTERS TESTBENCH\n";
         FrequencyCounter uMap;
         CharacterCounter counter;
         
         unordered_map<char, int> freqMap = uMap.countFrequencies(fileName);
         counter.printFrequencies(freqMap);
-    } 
+    } else if (option == "-redundancy") {
+        cout << "\nCOMPRESSION BY REDUNDANCY\n";
+        FrequencyCounter uMap;
+        
+        vector<string> list = uMap.redundancyList(fileName);
+        for (string e : list) {
+            cout << e;
+        }
+        cout << endl;
+    }
 }

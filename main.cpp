@@ -9,7 +9,7 @@
 using namespace std;
 
 /*
-    when contributing to this project: use the Makefile to create a executable out of this code,
+    When contributing to this project: use the Makefile to create a executable out of this code,
     as it prevents tons of old versions to flood the repo
 */
 
@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
     if(argc == 3){
         testBenchOptions = argv[2];
     }
-    else if(argc >3){
+    else if(argc > 3){
         cerr << "\033[31m\nINCORRECT ARGUMENTS (TOO MANY ARGUMENTS PASSED)\033[0m\n";
         cerr << "CORRECT USE: " << argv[0] << " <TARGET_FILE_PATH>\n (OPTIONAL)<TESTBENCH_OPTIONS>";
         return 1;

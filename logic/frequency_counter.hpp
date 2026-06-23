@@ -3,6 +3,8 @@
 
 #include <string>
 #include <unordered_map>
+#include <vector>
+#include <sstream>
 using namespace std;
 
 class FrequencyCounter {
@@ -12,7 +14,7 @@ public:
 
     //method responsible for opening the file and counting each instance of a character
     unordered_map<char, int> countFrequencies(const string& fileName);
-
+    vector<string> redundancyList(const string& fileName);
 };
 
 #endif // FREQUENCY_COUNTER_HPP
