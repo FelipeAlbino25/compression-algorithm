@@ -36,6 +36,7 @@ class HuffmanTree {
     public:
         HuffmanTree();
         node* build(vector<node*> plist);
+        node* build_opt(vector<node*> plist);
         char getChar(string code);
         string toString();
         void showTable();

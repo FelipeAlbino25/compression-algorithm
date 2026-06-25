@@ -144,6 +144,30 @@ node* ht::build(vector<node*> plist) {
 
     return root;
 }
+
+node* ht::build_opt(vector<node*> plist) {
+    node *aux, *curr;
+ // TO DO
+    node* root = plist[0];
+    string code = "";
+
+    for (int i = 0; i < plist.size(); i += 2) {
+        curr = plist[i];
+        curr->dir = plist[i + 2];
+        curr->esq = plist[i + 1];
+
+        if (curr->control_node) {
+            this->table[plist[i + 1]->c] = code + "1";
+        }
+        code += "0";
+    }
+
+    this->root = root;
+    this->showTree();
+
+    return root;
+}
+
 char ht::getChar(string code) {
     return 'a';
 }
