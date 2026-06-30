@@ -42,6 +42,7 @@ class HuffmanTree {
         void showTable();
         void showTree();
         unordered_map<char, string> getTable();
+        void gerarTabelaCodigos(node* no_atual, string codigo_acumulado);
 
 } typedef ht;
 

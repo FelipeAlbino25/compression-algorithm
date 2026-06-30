@@ -147,7 +147,7 @@ void TestbenchRunner::run(const string& option, const string& fileName) {
         while(getline(file, line)) content += line;
 
         stringstream cpt_name;
-        cpt_name << fileName << ".huff.freg";
+        cpt_name << fileName << ".hopt.freg";
         std::ofstream arquivo(cpt_name.str(), std::ios::binary);
         if (arquivo.is_open()) {
             arquivo.put(0xff);

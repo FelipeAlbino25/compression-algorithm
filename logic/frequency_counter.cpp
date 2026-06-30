@@ -122,6 +122,20 @@ vector<node*> priority_list(unordered_map<char, int> freqMap) {
     return list;
 }
 
+void ht::gerarTabelaCodigos(node* no_atual, string codigo_acumulado) {
+    if (no_atual == nullptr) return;
+
+    // Se for uma folha (letra real), salva o código acumulado
+    if (no_atual->esq == nullptr && no_atual->dir == nullptr) {
+        this->table[no_atual->c] = codigo_acumulado;
+        return;
+    }
+
+    // Esquerda ganha 0, Direita ganha 1
+    gerarTabelaCodigos(no_atual->esq, codigo_acumulado + "0");
+    gerarTabelaCodigos(no_atual->dir, codigo_acumulado + "1");
+}
+
 node* ht::build(vector<node*> plist) {
     node *aux, *curr;
 
@@ -132,41 +146,61 @@ node* ht::build(vector<node*> plist) {
         curr = plist[i];
         curr->dir = plist[i + 2];
         curr->esq = plist[i + 1];
-
-        if (curr->control_node) {
-            this->table[plist[i + 1]->c] = code + "1";
-        }
-        code += "0";
     }
 
     this->root = root;
+    //gerarTabelaCodigos(this->root, code);
     this->showTree();
 
     return root;
 }
-
 node* ht::build_opt(vector<node*> plist) {
-    node *aux, *curr;
- // TO DO
-    node* root = plist[0];
-    string code = "";
+    if (plist.empty()) return nullptr;
 
-    for (int i = 0; i < plist.size(); i += 2) {
-        curr = plist[i];
-        curr->dir = plist[i + 2];
-        curr->esq = plist[i + 1];
+    int tamanho = plist.size();
 
-        if (curr->control_node) {
-            this->table[plist[i + 1]->c] = code + "1";
-        }
-        code += "0";
+    // PASSO 1: Zerar TODOS os ponteiros de todo mundo para garantir que 
+    // nenhum resquício de lixo da memória crie um ciclo falso.
+    for (int i = 0; i < tamanho; i++) {
+        plist[i]->esq = nullptr;
+        plist[i]->dir = nullptr;
+        plist[i]->control_node = false;
     }
 
-    this->root = root;
-    this->showTree();
+    // PASSO 2: Montar a árvore balanceada geometricamente
+    // Nós varremos apenas até a metade, pois os filhos estarão na segunda metade.
+    for (int i = 0; i < tamanho / 2; i++) {
+        int indice_esq = 2 * i + 1;
+        int indice_dir = 2 * i + 2;
 
+        // Se o índice calculado estiver dentro do vetor, faz a ligação
+        if (indice_esq < tamanho) {
+            plist[i]->esq = plist[indice_esq];
+            plist[i]->control_node = true;
+        }
+
+        if (indice_dir < tamanho) {
+            plist[i]->dir = plist[indice_dir];
+            plist[i]->control_node = true;
+        }
+    }
+
+    // A raiz absoluta de uma árvore balanceada em vetor é sempre a posição 0
+    node* root = plist[0];
+    this->root = root;
+
+    // PASSO 3: Agora que a árvore está 100% linear e sem loops,
+    // limpamos a tabela antiga e chamamos a recursão com segurança!
+    this->table.clear();
+    string code = "";
+    
+    // Essa chamada NÃO vai mais dar Segmentation Fault:
+    gerarTabelaCodigos(this->root, code);
+
+    this->showTree();
     return root;
 }
+
 
 char ht::getChar(string code) {
     return 'a';
