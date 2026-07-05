@@ -3,6 +3,7 @@
 #include <string>
 #include <stdexcept> 
 #include <unordered_map>
+#include <chrono>
 #include "testbenches/testbench_runner.hpp" 
 #include "logic/compressor.hpp"
 #include "logic/decompressor.hpp"
@@ -40,8 +41,9 @@ int main(int argc, char* argv[]) {
 
     //will launch an exception if it detects a reading error (badbit)
     file.exceptions(fstream::badbit);
-
+    
     try {
+      auto start_time = chrono::high_resolution_clock::now();
       if(testBenchOptions==""){
         Compressor compressor;
         compressor.compress(fileName);
@@ -54,6 +56,17 @@ int main(int argc, char* argv[]) {
         TestbenchRunner runner;
         runner.run(testBenchOptions, fileName);
       }
+      auto finish_time = chrono::high_resolution_clock::now();
+
+      auto duracao_ms = chrono::duration_cast<chrono::milliseconds>(finish_time - start_time).count();
+    
+      // Medindo em microssegundos (ótimo para funções ultra rápidas, como o seu build_opt)
+      auto duracao_us = chrono::duration_cast<chrono::microseconds>(finish_time - start_time).count();
+
+      // 4. Exibe os resultados
+      cout << "\n========== TELEMETRIA ==========" << endl;
+      cout << "Runtime: " << duracao_ms << " ms (" << duracao_us << " us)" << endl;
+      cout << "================================" << endl;
     } 
     // verifies if its an ifstream exception
     catch (const ifstream::failure& e) {

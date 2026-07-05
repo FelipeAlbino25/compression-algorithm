@@ -9,6 +9,23 @@
 using namespace std;
 namespace fs = std::filesystem;
 
+void exibirTamanho(const std::string& caminho_do_arquivo) {
+    try {
+        cout << "=============== " << caminho_do_arquivo << " ===============" << endl;
+        // Pega o tamanho do arquivo diretamente em BYTES
+        uintmax_t tamanho_bytes = std::filesystem::file_size(caminho_do_arquivo);
+
+        std::cout << "Tamanho do arquivo: " << tamanho_bytes << " bytes\n";
+        
+        // Se quiser exibir em Kilobytes (KB) para a telemetria ficar mais bonita:
+        std::cout << "Tamanho em KB: " << (tamanho_bytes / 1024.0) << " KB\n";
+        cout << "============================================================" << endl;
+    } 
+    catch (std::filesystem::filesystem_error& e) {
+        std::cerr << "Erro ao acessar o arquivo: " << e.what() << '\n';
+    }
+}
+
 void TestbenchRunner::run(const string& option, const string& fileName) {
     if (option == "-count") {
         cout << "\nFREQUENCY OF CHARACTERS TESTBENCH\n";
@@ -36,6 +53,10 @@ void TestbenchRunner::run(const string& option, const string& fileName) {
             cout << "Compression went successfully!" << endl;
             arquivo.flush();
             arquivo.close();
+            exibirTamanho(fileName);
+            cout << endl;
+            exibirTamanho(cpt_name.str());
+            cout << endl;
         } else {
             throw runtime_error("ERROR WHILE TRYING TO CREATE COMPRESSED FILE!");
             return;
@@ -75,7 +96,7 @@ void TestbenchRunner::run(const string& option, const string& fileName) {
         ht tree = HuffmanTree();
         node* r = tree.build(plist);
 
-        tree.showTable();
+        //tree.showTable();
         std::ifstream file(fileName, std::ios::binary);
         if (!file.is_open()) {
             throw runtime_error("FAILED TO OPEN FILE #\n");
@@ -105,6 +126,10 @@ void TestbenchRunner::run(const string& option, const string& fileName) {
             arquivo.flush();
             arquivo.close();
             cout << "Compression went successfully!" << endl;
+            exibirTamanho(fileName);
+            cout << endl;
+            exibirTamanho(cpt_name.str());
+            cout << endl;
             return;
         } else {
             throw runtime_error("ERROR WHILE TRYING TO CREATE COMPRESSED FILE!");
@@ -121,7 +146,7 @@ void TestbenchRunner::run(const string& option, const string& fileName) {
         ht tree = HuffmanTree();
         node* r = tree.build_opt(plist);
 
-        tree.showTable();
+        //tree.showTable();
         std::ifstream file(fileName, std::ios::binary);
         if (!file.is_open()) {
             throw runtime_error("FAILED TO OPEN FILE #\n");
@@ -151,6 +176,10 @@ void TestbenchRunner::run(const string& option, const string& fileName) {
             arquivo.flush();
             arquivo.close();
             cout << "Compression went successfully!" << endl;
+            exibirTamanho(fileName);
+            cout << endl;
+            exibirTamanho(cpt_name.str());
+            cout << endl;
             return;
         } else {
             throw runtime_error("ERROR WHILE TRYING TO CREATE COMPRESSED FILE!");

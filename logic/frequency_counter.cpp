@@ -152,7 +152,7 @@ node* ht::build(vector<node*> plist) {
     this->root = root;
     this->table.clear();
     gerarTabelaCodigos(this->root, code);
-    this->showTree();
+    //this->showTree();
 
     return root;
 }
@@ -229,7 +229,7 @@ node* ht::build_opt(vector<node*> plist) {
     string code = "";
     gerarTabelaCodigos(this->root, code);
 
-    this->showTree();
+    //this->showTree();
     return this->root;
 }
 

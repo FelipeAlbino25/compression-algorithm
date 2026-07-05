@@ -11,4 +11,5 @@ public:
     void run(const std::string& option, const std::string& fileName);
 };
 
+void exibirTamanho(const std::string& caminho_do_arquivo);
 #endif
