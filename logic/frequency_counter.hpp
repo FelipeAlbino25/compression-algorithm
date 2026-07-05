@@ -7,6 +7,13 @@
 #include <sstream>
 using namespace std;
 
+// Magic bytes to identify compression type in compressed files
+// Each compressed file starts with these 4 bytes
+const unsigned char MAGIC_REDUNDANCY[]  = {0xC0, 0x01, 0x00, 0x01}; // Redundancy RLE
+const unsigned char MAGIC_HUFFMAN_NAIVE[] = {0xC0, 0x01, 0x00, 0x02}; // Naive Huffman
+const unsigned char MAGIC_HUFFMAN_OPT[]  = {0xC0, 0x01, 0x00, 0x03}; // Optimized Huffman
+const int MAGIC_SIZE = 4;
+
 class FrequencyCounter {
 public:
     //default constructor
@@ -43,6 +50,10 @@ class HuffmanTree {
         void showTree();
         unordered_map<char, string> getTable();
         void gerarTabelaCodigos(node* no_atual, string codigo_acumulado);
+        node* getRoot();
+
+        // Rebuild a Huffman tree from a serialized binary stream
+        static node* rebuildTree(const unsigned char* data, int& offset, int dataLen);
 
 } typedef ht;
 
@@ -52,5 +63,8 @@ void print_list(vector<node*> plist);
 
 void writeEncodedText(const string& texto_original, unordered_map<char, string> table, ofstream& arquivo_saida);
 
-void stringify(node* n, stringstream& ss);
+void stringify(node* n, stringstream* ss);
+
+// Serialize the full tree structure (including internal nodes) so it can be rebuilt for decompression
+void writeTreeSerialized(node* n, ofstream& out);
 #endif // FREQUENCY_COUNTER_HPP

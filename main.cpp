@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include "testbenches/testbench_runner.hpp" 
 #include "logic/compressor.hpp"
+#include "logic/decompressor.hpp"
 
 using namespace std;
 
@@ -44,6 +45,10 @@ int main(int argc, char* argv[]) {
       if(testBenchOptions==""){
         Compressor compressor;
         compressor.compress(fileName);
+      }
+      else if(testBenchOptions=="-build"){
+        Decompressor decompressor;
+        decompressor.decompress(fileName);
       }
       else{
         TestbenchRunner runner;
