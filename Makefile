@@ -34,6 +34,7 @@ clean-tests:
 	rm -f ./examples/outputs/red/*
 
 tests:
+	echo "Starting tests!"
 	make
 	./compact ./examples/rtext.txt -redundancy
 	./compact ./examples/rtext.txt -huffman-naive
@@ -83,3 +84,11 @@ tests:
 	mv ./examples/himage2.bmp.huff.freg ./examples/outputs/huff-naive
 	mv ./examples/himage2.bmp.hopt.freg ./examples/outputs/huff
 
+	./compact ./examples/example.pdf -redundancy
+	./compact ./examples/example.pdf -huffman-naive
+	./compact ./examples/example.pdf -huffman
+	
+	mv ./examples/example.pdf.freg ./examples/outputs/red
+	mv ./examples/example.pdf.huff.freg ./examples/outputs/huff-naive
+	mv ./examples/example.pdf.hopt.freg ./examples/outputs/huff
+	echo "Finished!"
